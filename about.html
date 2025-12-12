@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros - Shot's Licorería</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-sans { font-family: 'Inter', sans-serif; }
+        
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(26, 26, 26, 0.95);
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .btn-golden {
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-golden:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .team-card {
+            transition: all 0.3s ease;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: #D4AF37;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #D4AF37;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% - 1rem);
+            background: linear-gradient(to bottom, #D4AF37, transparent);
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        .award-card {
+            background: linear-gradient(135deg, #1F2937, #374151);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .award-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-2xl font-serif font-bold text-white">Shot's</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Inicio</a>
+                        <a href="products.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Productos</a>
+                        <a href="about.html" class="text-yellow-400 px-3 py-2 text-sm font-medium">Nosotros</a>
+                        <a href="contact.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Contacto</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white hover:text-yellow-400">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden nav-blur">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Inicio</a>
+                <a href="products.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Productos</a>
+                <a href="cocktails.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Cócteles</a>
+                <a href="about.html" class="text-yellow-400 block px-3 py-2 text-base font-medium">Nosotros</a>
+                <a href="contact.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="pt-24 pb-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 scroll-reveal">
+                <h1 class="text-5xl md:text-6xl font-serif font-bold text-gray-900 mb-4">Nuestra Historia</h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Más que una licorería, somos guardianes de la tradición y pioneros en la excelencia.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="scroll-reveal">
+                    <img src="resources/bartender-hero.png" alt="Interior de Shot's" class="rounded-2xl shadow-lg w-full">
+                </div>
+                <div class="scroll-reveal">
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6">La Pasión que Nos Define</h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        Shot's nació de una visión simple pero poderosa: crear un espacio donde cada botella cuente una historia, donde cada sorbo sea una experiencia inolvidable. Fundada en 2022 por una persona apasionada del mundo de los licores, hemos crecido para convertirnos en el destino preferido de los verdaderos conocedores.
+                    </p>
+                    <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                        Nuestra misión va más allá de la venta de licores. Nos dedicamos a educar, inspirar y crear momentos memorables. Cada producto en nuestra selección ha sido cuidadosamente elegido por su calidad, historia y carácter único.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-yellow-600 mb-2">3+</div>
+                            <div class="text-gray-600">Años de Excelencia</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-yellow-600 mb-2">50+</div>
+                            <div class="text-gray-600">Etiquetas Exclusivas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">Nuestro Viaje</h2>
+                <p class="text-xl text-gray-600">Cada etapa de nuestra historia marcada por la pasión y el compromiso con la excelencia.</p>
+            </div>
+            
+            <div class="space-y-12">
+                <div class="timeline-item scroll-reveal">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-2xl font-bold text-yellow-600 mr-4">2022</span>
+                            <h3 class="text-2xl font-serif font-bold text-gray-900">Los Inicios</h3>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed">
+                            Fundación de Shot's en un pequeño local en Pinllo. Comenzamos con una selección de 5 etiquetas cuidadosamente seleccionadas, enfocándonos en whiskies, vodkas y  vinos.
+                        </p>
+                    </div>
+                </div>
+                
+                
+               
+                
+                <div class="timeline-item scroll-reveal">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-2xl font-bold text-yellow-600 mr-4">2023</span>
+                            <h3 class="text-2xl font-serif font-bold text-gray-900">Innovación Digital</h3>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed">
+                            Lanzamos nuestra plataforma de delivery  y comenzamos a ofrecer experiencias virtuales. Adaptamos nuestros servicios para seguir conectando con nuestra comunidad.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item scroll-reveal">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-2xl font-bold text-yellow-600 mr-4">2025</span>
+                            <h3 class="text-2xl font-serif font-bold text-gray-900">El Futuro Brilla</h3>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed">
+                            Hoy somos referentes en la industria, con más de 50 etiquetas y un equipo que continúa innovando y educando a nuestra comunidad de apasionados.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-16 bg-gray-100 ">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">Nuestro Equipo</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Expertos apasionados dedicados a ofrecer la mejor experiencia.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="team-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-reveal">
+                    <div class="h-64 bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center text-4xl font-bold text-yellow-600">
+                            WC
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-serif font-bold text-gray-900 mb-2">William Cunachi</h3>
+                        <p class="text-yellow-600 font-semibold mb-4">Fundador & Dueño</p>
+                        <p class="text-gray-600 leading-relaxed">
+                            Con más de 3 años en la industria, William es el visionario detrás de Shot's. Su pasión por los licores lo ha llevado a recorrer el mundo buscando las mejores etiquetas.
+                        </p>
+                    </div>
+                </div>
+                 <div class="team-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-reveal">
+                    <div class="h-64 bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center text-4xl font-bold text-yellow-600">
+                            AA
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-serif font-bold text-gray-900 mb-2">Alexandra Altamirano</h3>
+                        <p class="text-yellow-600 font-semibold mb-4">Marketing & Publicidad</p>
+                        <p class="text-gray-600 leading-relaxed">
+                           Visionaria en conectar con nuestro publico en Shot's atravez de publicidad genuina.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   
+    <!-- Values Section -->
+    <section class="py-16 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-4">Nuestros Valores</h2>
+                <p class="text-xl text-gray-300">Los principios que guían cada decisión y cada interacción.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center scroll-reveal">
+                    <div class="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🥃</span>
+                    </div>
+                    <h3 class="text-xl font-serif font-bold text-white mb-2">Excelencia</h3>
+                    <p class="text-gray-300">Seleccionamos solo lo mejor, sin compromisos en calidad.</p>
+                </div>
+                
+                <div class="text-center scroll-reveal">
+                    <div class="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🤝</span>
+                    </div>
+                    <h3 class="text-xl font-serif font-bold text-white mb-2">Autenticidad</h3>
+                    <p class="text-gray-300">Cada botella cuenta una historia verdadera y única.</p>
+                </div>
+                
+                <div class="text-center scroll-reveal">
+                    <div class="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">📚</span>
+                    </div>
+                    <h3 class="text-xl font-serif font-bold text-white mb-2">Educación</h3>
+                    <p class="text-gray-300">Compartimos conocimiento para enriquecer la experiencia.</p>
+                </div>
+                
+                <div class="text-center scroll-reveal">
+                    <div class="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">💎</span>
+                    </div>
+                    <h3 class="text-xl font-serif font-bold text-white mb-2">Pasión</h3>
+                    <p class="text-gray-300">Amamos lo que hacemos y se refleja en cada detalle.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6">Sé Parte de Nuestra Historia</h2>
+                <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                    Visítanos y descubre por qué Shot's es más que una licorería: es un destino donde cada botella cuenta una historia y cada visita crea un recuerdo inolvidable.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="contact.html" class="btn-golden text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all">
+                        Visítanos
+                    </a>
+                    <a href="products.html" class="bg-gray-900 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-800 transition-all">
+                        Explorar Productos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+     <footer class="bg-black text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-4">Shot's</h3>
+                    <p class="text-gray-400 mb-4">Tu destino premium para licores exclusivos y experiencias únicas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">Facebook</a>
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">Instagram</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Productos</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Whisky</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Vodka</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Gin</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Tequila</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Servicios</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">Delivery </a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Via Quisapincha Pinllo</li>
+                        <li>Ciudad, Ambato</li>
+                        <li>Tel: 0969020988</li>
+                        <li>info@shots-licoreria.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Shot's Licorería. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+<script src="about.js"></script>
+</body>
+</html>

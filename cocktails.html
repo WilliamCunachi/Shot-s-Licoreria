@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cócteles - Shot's Licorería</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-sans { font-family: 'Inter', sans-serif; }
+        
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(26, 26, 26, 0.95);
+        }
+        
+        .cocktail-card {
+            perspective: 1000px;
+            height: 400px;
+            cursor: pointer;
+        }
+        
+        .cocktail-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .cocktail-card.flipped .cocktail-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .cocktail-card-front, .cocktail-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cocktail-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #1F2937, #374151);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .btn-golden {
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-golden:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .category-filter {
+            transition: all 0.3s ease;
+        }
+        
+        .category-filter.active {
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .ingredient-tag {
+            background: rgba(212, 175, 55, 0.2);
+            color: #D4AF37;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .difficulty-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .difficulty-easy { background: #10B981; color: white; }
+        .difficulty-medium { background: #F59E0B; color: white; }
+        .difficulty-hard { background: #EF4444; color: white; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-2xl font-serif font-bold text-white">Shot's</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Inicio</a>
+                        <a href="products.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Productos</a>
+                        <a href="cocktails.html" class="text-yellow-400 px-3 py-2 text-sm font-medium">Cócteles</a>
+                        <a href="about.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Nosotros</a>
+                        <a href="contact.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Contacto</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white hover:text-yellow-400">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden nav-blur">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Inicio</a>
+                <a href="products.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Productos</a>
+                <a href="cocktails.html" class="text-yellow-400 block px-3 py-2 text-base font-medium">Cócteles</a>
+                <a href="about.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Nosotros</a>
+                <a href="contact.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="pt-24 pb-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 scroll-reveal">
+                <h1 class="text-5xl md:text-6xl font-serif font-bold text-gray-900 mb-4">Cócteles Exclusivos</h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Descubre recetas únicas creadas por nuestros expertos mixólogos. Cada cóctel cuenta una historia.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filter -->
+    <section class="py-8 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-4 scroll-reveal">
+                <button class="category-filter active px-6 py-3 rounded-full bg-white text-gray-700 font-semibold shadow-md hover:shadow-lg" data-category="all">
+                    Todos
+                </button>
+                <button class="category-filter px-6 py-3 rounded-full bg-white text-gray-700 font-semibold shadow-md hover:shadow-lg" data-category="classic">
+                    Clásicos
+                </button>
+                <button class="category-filter px-6 py-3 rounded-full bg-white text-gray-700 font-semibold shadow-md hover:shadow-lg" data-category="signature">
+                    Signatura
+                </button>
+                <button class="category-filter px-6 py-3 rounded-full bg-white text-gray-700 font-semibold shadow-md hover:shadow-lg" data-category="tropical">
+                    Tropical
+                </button>
+                <button class="category-filter px-6 py-3 rounded-full bg-white text-gray-700 font-semibold shadow-md hover:shadow-lg" data-category="whiskey-based">
+                    Whisky
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cocktails Grid -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Classic Cocktails -->
+                <div class="cocktail-card scroll-reveal" data-category="classic">
+                    <div class="cocktail-card-inner">
+                        <div class="cocktail-card-front">
+                            <div class="relative h-full">
+                                <img src="resources/cocktail-collection.png" alt="Old Fashioned" class="w-full h-full object-cover">
+                                <div class="difficulty-badge difficulty-medium">Medio</div>
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                                    <h3 class="text-2xl font-serif font-bold text-white mb-2">Old Fashioned</h3>
+                                    <p class="text-gray-200 text-sm">El rey de los cócteles clásicos</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cocktail-card-back">
+                            <div>
+                                <h3 class="text-2xl font-serif font-bold mb-4">Old Fashioned</h3>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Ingredientes:</h4>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span class="ingredient-tag">Bourbon</span>
+                                        <span class="ingredient-tag">Azúcar</span>
+                                        <span class="ingredient-tag">Angostura</span>
+                                        <span class="ingredient-tag">Cáscara Naranja</span>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Preparación:</h4>
+                                    <p class="text-sm text-gray-300">Macerar el azúcar con bitters, añadir whisky y hielo. Decorar con cáscara de naranja.</p>
+                                </div>
+                            </div>
+                            <button class="btn-golden text-white px-6 py-2 rounded-full font-semibold w-full">
+                                Ver Video Tutorial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cocktail-card scroll-reveal" data-category="classic">
+                    <div class="cocktail-card-inner">
+                        <div class="cocktail-card-front">
+                            <div class="relative h-full">
+                                <img src="https://kimi-web-img.moonshot.cn/img/assets.bonappetit.com/0af8b93ccad25b3511afbfae8a20270bea8f0ebf.jpg" alt="Negroni" class="w-full h-full object-cover">
+                                <div class="difficulty-badge difficulty-easy">Fácil</div>
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                                    <h3 class="text-2xl font-serif font-bold text-white mb-2">Negroni</h3>
+                                    <p class="text-gray-200 text-sm">Equilibrio perfecto de amargor y dulzura</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cocktail-card-back">
+                            <div>
+                                <h3 class="text-2xl font-serif font-bold mb-4">Negroni</h3>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Ingredientes:</h4>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span class="ingredient-tag">Gin</span>
+                                        <span class="ingredient-tag">Campari</span>
+                                        <span class="ingredient-tag">Vermouth Rojo</span>
+                                        <span class="ingredient-tag">Rodaja Naranja</span>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Preparación:</h4>
+                                    <p class="text-sm text-gray-300">Mezclar ingredientes en coctelera con hielo. Servir en vaso old fashioned con rodaja de naranja.</p>
+                                </div>
+                            </div>
+                            <button class="btn-golden text-white px-6 py-2 rounded-full font-semibold w-full">
+                                Ver Video Tutorial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signature Cocktails -->
+                <div class="cocktail-card scroll-reveal" data-category="signature">
+                    <div class="cocktail-card-inner">
+                        <div class="cocktail-card-front">
+                            <div class="relative h-full">
+                                <img src="https://kimi-web-img.moonshot.cn/img/images.squarespace-cdn.com/dea23d44571ead9e941260a699b2afa3e78bf758.jpg" alt="Golden Sunset" class="w-full h-full object-cover">
+                                <div class="difficulty-badge difficulty-hard">Experto</div>
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                                    <h3 class="text-2xl font-serif font-bold text-white mb-2">Golden Sunset</h3>
+                                    <p class="text-gray-200 text-sm">Creación exclusiva de Shot's</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cocktail-card-back">
+                            <div>
+                                <h3 class="text-2xl font-serif font-bold mb-4">Golden Sunset</h3>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Ingredientes:</h4>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span class="ingredient-tag">Whisky 18 Años</span>
+                                        <span class="ingredient-tag">Miel de Lavanda</span>
+                                        <span class="ingredient-tag">Limón</span>
+                                        <span class="ingredient-tag">Amargo de Naranja</span>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Preparación:</h4>
+                                    <p class="text-sm text-gray-300">Shake vigoroso con hielo. Double strain en vaso coupe. Decorar con flores comestibles.</p>
+                                </div>
+                            </div>
+                            <button class="btn-golden text-white px-6 py-2 rounded-full font-semibold w-full">
+                                Ver Video Tutorial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cocktail-card scroll-reveal" data-category="signature">
+                    <div class="cocktail-card-inner">
+                        <div class="cocktail-card-front">
+                            <div class="relative h-full">
+                                <img src="https://kimi-web-img.moonshot.cn/img/kinshipdc.com/0e0d07ea70456ee252251e5a725368ca75e5860b.jpg" alt="Smoky Martini" class="w-full h-full object-cover">
+                                <div class="difficulty-badge difficulty-medium">Medio</div>
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                                    <h3 class="text-2xl font-serif font-bold text-white mb-2">Smoky Martini</h3>
+                                    <p class="text-gray-200 text-sm">Un twist sofisticado al clásico</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cocktail-card-back">
+                            <div>
+                                <h3 class="text-2xl font-serif font-bold mb-4">Smoky Martini</h3>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Ingredientes:</h4>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span class="ingredient-tag">Gin Premium</span>
+                                        <span class="ingredient-tag">Vermouth Seco</span>
+                                        <span class="ingredient-tag">Whisky Ahumado</span>
+                                        <span class="ingredient-tag">Aceituna</span>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Preparación:</h4>
+                                    <p class="text-sm text-gray-300">Stir con hielo. Servir en vaso martini enfriado. Rociar con whisky ahumado.</p>
+                                </div>
+                            </div>
+                            <button class="btn-golden text-white px-6 py-2 rounded-full font-semibold w-full">
+                                Ver Video Tutorial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tropical Cocktails -->
+                <div class="cocktail-card scroll-reveal" data-category="tropical">
+                    <div class="cocktail-card-inner">
+                        <div class="cocktail-card-front">
+                            <div class="relative h-full">
+                                <img src="https://kimi-web-img.moonshot.cn/img/www.mixlycocktailco.com/92ce454746e9fc893931f27487343e1a76be6433.jpg" alt="Tropical Breeze" class="w-full h-full object-cover">
+                                <div class="difficulty-badge difficulty-easy">Fácil</div>
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                                    <h3 class="text-2xl font-serif font-bold text-white mb-2">Tropical Breeze</h3>
+                                    <p class="text-gray-200 text-sm">Paraíso en un vaso</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cocktail-card-back">
+                            <div>
+                                <h3 class="text-2xl font-serif font-bold mb-4">Tropical Breeze</h3>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Ingredientes:</h4>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span class="ingredient-tag">Ron Blanco</span>
+                                        <span class="ingredient-tag">Piña Colada</span>
+                                        <span class="ingredient-tag">Jugo Mango</span>
+                                        <span class="ingredient-tag">Menta Fresca</span>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Preparación:</h4>
+                                    <p class="text-sm text-gray-300">Blend con hielo hasta consistencia suave. Servir en vaso tropical. Decorar con frutas.</p>
+                                </div>
+                            </div>
+                            <button class="btn-golden text-white px-6 py-2 rounded-full font-semibold w-full">
+                                Ver Video Tutorial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cocktail-card scroll-reveal" data-category="tropical">
+                    <div class="cocktail-card-inner">
+                        <div class="cocktail-card-front">
+                            <div class="relative h-full">
+                                <img src="https://kimi-web-img.moonshot.cn/img/cdn.thecollector.com/dc1791d62b4d95bbb5df525779c0d80b2012ed83.jpg" alt="Caribbean Sunset" class="w-full h-full object-cover">
+                                <div class="difficulty-badge difficulty-medium">Medio</div>
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                                    <h3 class="text-2xl font-serif font-bold text-white mb-2">Caribbean Sunset</h3>
+                                    <p class="text-gray-200 text-sm">Colores del atardecer caribeño</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cocktail-card-back">
+                            <div>
+                                <h3 class="text-2xl font-serif font-bold mb-4">Caribbean Sunset</h3>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Ingredientes:</h4>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span class="ingredient-tag">Ron Añejo</span>
+                                        <span class="ingredient-tag">Granadina</span>
+                                        <span class="ingredient-tag">Jugo Naranja</span>
+                                        <span class="ingredient-tag">Licor de Coco</span>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Preparación:</h4>
+                                    <p class="text-sm text-gray-300">Capas cuidadosas para efecto sunset. Servir en vaso alto con hielo.</p>
+                                </div>
+                            </div>
+                            <button class="btn-golden text-white px-6 py-2 rounded-full font-semibold w-full">
+                                Ver Video Tutorial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Whiskey-based Cocktails -->
+                <div class="cocktail-card scroll-reveal" data-category="whiskey-based">
+                    <div class="cocktail-card-inner">
+                        <div class="cocktail-card-front">
+                            <div class="relative h-full">
+                                <img src="https://kimi-web-img.moonshot.cn/img/www.hsglassbottle.com/2694ce6e4161c4cca5d14581d0609015de313707.png" alt="Whiskey Sour Premium" class="w-full h-full object-cover">
+                                <div class="difficulty-badge difficulty-easy">Fácil</div>
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                                    <h3 class="text-2xl font-serif font-bold text-white mb-2">Whiskey Sour Premium</h3>
+                                    <p class="text-gray-200 text-sm">La perfección en la simplicidad</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cocktail-card-back">
+                            <div>
+                                <h3 class="text-2xl font-serif font-bold mb-4">Whiskey Sour Premium</h3>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Ingredientes:</h4>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span class="ingredient-tag">Bourbon Premium</span>
+                                        <span class="ingredient-tag">Limón Fresco</span>
+                                        <span class="ingredient-tag">Jarabe Simple</span>
+                                        <span class="ingredient-tag">Clara de Huevo</span>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Preparación:</h4>
+                                    <p class="text-sm text-gray-300">Dry shake sin hielo, luego shake con hielo. Double strain. Decorar con cereza.</p>
+                                </div>
+                            </div>
+                            <button class="btn-golden text-white px-6 py-2 rounded-full font-semibold w-full">
+                                Ver Video Tutorial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cocktail-card scroll-reveal" data-category="whiskey-based">
+                    <div class="cocktail-card-inner">
+                        <div class="cocktail-card-front">
+                            <div class="relative h-full">
+                                <img src="https://kimi-web-img.moonshot.cn/img/static.turbosquid.com/85e3fc40f3958d0422e89b959691cf936085d08d.jpg" alt="Manhattan Reserve" class="w-full h-full object-cover">
+                                <div class="difficulty-badge difficulty-medium">Medio</div>
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                                    <h3 class="text-2xl font-serif font-bold text-white mb-2">Manhattan Reserve</h3>
+                                    <p class="text-gray-200 text-sm">Elegancia atemporal</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cocktail-card-back">
+                            <div>
+                                <h3 class="text-2xl font-serif font-bold mb-4">Manhattan Reserve</h3>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Ingredientes:</h4>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span class="ingredient-tag">Rye Whisky</span>
+                                        <span class="ingredient-tag">Vermouth Rojo</span>
+                                        <span class="ingredient-tag">Angostura</span>
+                                        <span class="ingredient-tag">Cereza Maraschino</span>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Preparación:</h4>
+                                    <p class="text-sm text-gray-300">Stir con hielo hasta enfriar. Servir en vaso coupe. Decorar con cerecha premium.</p>
+                                </div>
+                            </div>
+                            <button class="btn-golden text-white px-6 py-2 rounded-full font-semibold w-full">
+                                Ver Video Tutorial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-6">¿Listo para la Experiencia?</h2>
+                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Visítanos y deja que nuestros expertos mixólogos preparen estos cócteles exclusivos especialmente para ti.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="contact.html" class="btn-golden text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all">
+                        Reservar Mesa
+                    </a>
+                    <a href="products.html" class="bg-gray-800 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-700 transition-all">
+                        Comprar Ingredientes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-4">Shot's</h3>
+                    <p class="text-gray-400 mb-4">Tu destino premium para licores exclusivos y experiencias únicas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">Facebook</a>
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">Instagram</a>
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">Twitter</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Productos</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Whisky</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Vodka</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Gin</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Tequila</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Servicios</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">Asesoría Personalizada</a></li>
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">Eventos Privados</a></li>
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">Catas Degustación</a></li>
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">Delivery Premium</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Av. Principal 123</li>
+                        <li>Ciudad, CP 12345</li>
+                        <li>Tel: (555) 123-4567</li>
+                        <li>info@shots-licoreria.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Shot's Licorería. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="cocktail-menu.js"></script>
+</body>
+</html>

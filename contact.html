@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Shot's Licorería</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .font-sans {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(26, 26, 26, 0.95);
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn-golden {
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            transition: all 0.3s ease;
+        }
+
+        .btn-golden:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .form-input {
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .contact-card {
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 400px;
+            border: 0;
+        }
+
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px) scale(1.1);
+            color: #D4AF37;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .success-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-2xl font-serif font-bold text-white">Shot's</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html"
+                            class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Inicio</a>
+                        <a href="products.html"
+                            class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Productos</a>
+                        <a href="about.html"
+                            class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Nosotros</a>
+                        <a href="contact.html" class="text-yellow-400 px-3 py-2 text-sm font-medium">Contacto</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white hover:text-yellow-400">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden nav-blur">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html"
+                    class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Inicio</a>
+                <a href="products.html"
+                    class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Productos</a>
+                <a href="cocktails.html"
+                    class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Cócteles</a>
+                <a href="about.html"
+                    class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Nosotros</a>
+                <a href="contact.html" class="text-yellow-400 block px-3 py-2 text-base font-medium">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="pt-24 pb-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 scroll-reveal">
+                <h1 class="text-5xl md:text-6xl font-serif font-bold text-gray-900 mb-4">Contáctanos</h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Estamos aquí para ayudarte. ¿Tienes preguntas sobre
+                    nuestros productos?</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="contact-card bg-white rounded-2xl p-8 text-center scroll-reveal">
+                    <div class="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-gray-900 mb-4">Ubicación</h3>
+                    <p class="text-gray-600 mb-2">VIA Quisapincha</p>
+                    <p class="text-gray-600 mb-2">Pinllo</p>
+                    <p class="text-gray-600">Ciudad, Ambato</p>
+                </div>
+
+                <div class="contact-card bg-white rounded-2xl p-8 text-center scroll-reveal">
+                    <div class="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-gray-900 mb-4">Teléfono</h3>
+                    <p class="text-gray-600 mb-2">0969020988</p>
+                    <p class="text-gray-600">WhatsApp: 0969020988</p>
+                </div>
+
+                <div class="contact-card bg-white rounded-2xl p-8 text-center scroll-reveal">
+                    <div class="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-gray-900 mb-4">Email</h3>
+                    <p class="text-gray-600 mb-2">info@shots-licoreria.com</p>
+                    <p class="text-gray-600 mb-2">ventas@shots-licoreria.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form and Map -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Contact Form -->
+                <div class="scroll-reveal">
+                    <h2 class="text-3xl font-serif font-bold text-gray-900 mb-8">Envíanos un Mensaje</h2>
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="first-name"
+                                    class="block text-sm font-semibold text-gray-700 mb-2">Nombre</label>
+                                <input type="text" id="first-name" name="first-name" required
+                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label for="last-name"
+                                    class="block text-sm font-semibold text-gray-700 mb-2">Apellido</label>
+                                <input type="text" id="last-name" name="last-name" required
+                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                            <input type="email" id="email" name="email" required
+                                class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Teléfono
+                                (Opcional)</label>
+                            <input type="tel" id="phone" name="phone"
+                                class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label for="subject" class="block text-sm font-semibold text-gray-700 mb-2">Asunto</label>
+                            <select id="subject" name="subject" required
+                                class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="">Selecciona un asunto</option>
+                                <option value="consulta-productos">Consulta de Productos</option>
+                                <option value="catas">Reserva de Catas</option>
+                                <option value="eventos">Eventos Privados</option>
+                                <option value="sugerencias">Sugerencias</option>
+                                <option value="trabajo">Oportunidades de Trabajo</option>
+                                <option value="otros">Otros</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">Mensaje</label>
+                            <textarea id="message" name="message" rows="5" required
+                                class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent resize-none"
+                                placeholder="Cuéntanos cómo podemos ayudarte..."></textarea>
+                        </div>
+
+                        <div>
+                            <button type="submit"
+                                class="btn-golden w-full text-white px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-lg transition-all">
+                                Enviar Mensaje
+                            </button>
+                        </div>
+
+                        <div id="success-message" class="success-message">
+                            <p class="font-semibold">¡Mensaje enviado con éxito!</p>
+                            <p class="text-sm">Nos pondremos en contacto contigo pronto.</p>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Map and Additional Info -->
+                <div class="scroll-reveal">
+                    <h2 class="text-3xl font-serif font-bold text-gray-900 mb-8">Encuéntranos</h2>
+
+                    <!-- Map -->
+                    <div class="map-container mb-8">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.901470229325!2d-78.64849452630787!3d-1.2283398987599432!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d3812e48832899%3A0xaa3ed891859a990e!2sSHOT&#39;S%20LICORERIA!5e0!3m2!1ses!2sec!4v1765415477462!5m2!1ses!2sec"
+                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+
+                    <!-- Additional Information -->
+                    <div class="space-y-6">
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h3 class="text-xl font-serif font-bold text-gray-900 mb-4">Horarios de Atención</h3>
+                            <div class="space-y-2 text-gray-600">
+                                <div class="flex justify-between">
+                                    <span>Lunes a Miércoles</span>
+                                    <span>10:00 - 20:00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Jueves a Domingo</span>
+                                    <span>24:00h</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h3 class="text-xl font-serif font-bold text-gray-900 mb-4">Servicios Especiales</h3>
+                            <ul class="space-y-2 text-gray-600">
+
+                                <li class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Delivery
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="scroll-reveal">
+                <h2 class="text-3xl font-serif font-bold text-gray-900 mb-6">Síguenos en Redes Sociales</h2>
+                <p class="text-xl text-gray-600 mb-8">Mantente al día con nuestras últimas novedades, eventos y
+                    recomendaciones.</p>
+
+                <div class="flex justify-center space-x-8">
+                    <a href="https://www.facebook.com/profile.php?id=61568277212276" target="_blank"
+                        class="social-icon text-gray-600 hover:text-yellow-500 transition-colors">
+
+                        <!-- Ícono oficial de Facebook -->
+                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 
+        23.403.597 24 1.326 24h11.495v-9.294H9.691v-3.622h3.13V8.413c0-3.1 
+        1.893-4.788 4.659-4.788 1.325 0 2.464.099 2.795.143v3.24l-1.918.001c-1.504 
+        0-1.796.715-1.796 1.764v2.314h3.587l-.467 3.622h-3.12V24h6.116C23.403 
+        24 24 23.403 24 22.674V1.326C24 .597 23.403 0 22.675 0z" />
+                        </svg>
+
+                    </a>
+
+
+                    <a href="#" class="social-icon text-gray-600 hover:text-yellow-500 transition-colors">
+                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                        </svg>
+                    </a>
+
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+     <footer class="bg-black text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-4">Shot's</h3>
+                    <p class="text-gray-400 mb-4">Tu destino premium para licores exclusivos y experiencias únicas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">Facebook</a>
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">Instagram</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Productos</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Whisky</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Vodka</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Gin</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Tequila</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Servicios</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">Delivery </a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Via Quisapincha Pinllo</li>
+                        <li>Ciudad, Ambato</li>
+                        <li>Tel: 0969020988</li>
+                        <li>info@shots-licoreria.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Shot's Licorería. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="contact-form.js"></script>
+</body>
+
+</html>

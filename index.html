@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shot's - Licorería</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-sans { font-family: 'Inter', sans-serif; }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.7), rgba(139, 69, 19, 0.3)),
+                        url('resources/hero-store.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #D4AF37, #8B4513);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .product-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+            50% { transform: translateY(-100px) rotate(180deg); opacity: 1; }
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(26, 26, 26, 0.9);
+        }
+        
+        .btn-golden {
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-golden:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-2xl font-serif font-bold text-white">Shot's</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Inicio</a>
+                        <a href="products.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Productos</a>
+                        <a href="about.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Nosotros</a>
+                        <a href="contact.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Contacto</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white hover:text-yellow-400">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden nav-blur">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Inicio</a>
+                <a href="products.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Productos</a>
+                <a href="cocktails.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Cócteles</a>
+                <a href="about.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Nosotros</a>
+                <a href="contact.html" class="text-white hover:text-yellow-400 block px-3 py-2 text-base font-medium">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg min-h-screen flex items-center justify-center relative">
+        <div class="floating-particles">
+            <div class="particle" style="left: 10%; animation-delay: 0s; width: 4px; height: 4px;"></div>
+            <div class="particle" style="left: 20%; animation-delay: 1s; width: 6px; height: 6px;"></div>
+            <div class="particle" style="left: 30%; animation-delay: 2s; width: 3px; height: 3px;"></div>
+            <div class="particle" style="left: 40%; animation-delay: 3s; width: 5px; height: 5px;"></div>
+            <div class="particle" style="left: 50%; animation-delay: 4s; width: 4px; height: 4px;"></div>
+            <div class="particle" style="left: 60%; animation-delay: 5s; width: 7px; height: 7px;"></div>
+            <div class="particle" style="left: 70%; animation-delay: 1.5s; width: 3px; height: 3px;"></div>
+            <div class="particle" style="left: 80%; animation-delay: 2.5s; width: 5px; height: 5px;"></div>
+            <div class="particle" style="left: 90%; animation-delay: 3.5s; width: 4px; height: 4px;"></div>
+        </div>
+        
+        <div class="text-center text-white z-10 max-w-4xl mx-auto px-4">
+            <h1 class="text-6xl md:text-8xl font-serif font-bold mb-6">
+                <span class="text-gradient" id="hero-title">Shot's</span>
+            </h1>
+            <div class="text-xl md:text-2xl font-light mb-8 h-16">
+                <span id="typed-text"></span>
+            </div>
+            <p class="text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+                Descubre la excelencia en cada botella. En Shot's, seleccionamos las mejores etiquetas del mundo para ofrecerte una experiencia única.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="products.html" class="btn-golden text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all">
+                    Explorar Productos
+                </a>
+                <a href="cocktails.html" class="glass-effect text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:bg-opacity-20 transition-all">
+                    Ver Cócteles
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">Productos Destacados</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Las etiquetas más exclusivas y premiadas, cuidadosamente seleccionadas para los verdaderos conocedores.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-reveal">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="resources/John.jpg" alt="Whiskey Premium" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            Premium
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-serif font-bold text-gray-900 mb-2">Whisky John Morris-Black</h3>
+                        <p class="text-gray-600 mb-4">Un whisky excepcional de calidad, envejecido en barricas de roble.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-3xl font-bold text-yellow-600">$15</span>
+                            <button class="bg-gray-900 text-white px-6 py-2 rounded-full hover:bg-yellow-600 transition-colors">
+                                Ver Detalles
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-reveal">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="resources/Vodkas.jpg" alt="Vodka Premium" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            Nuevo
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-serif font-bold text-gray-900 mb-2">Vodka Absolut</h3>
+                        <p class="text-gray-600 mb-4">Vodka Absolut de calidad suprema, destilado cuatro veces para una pureza excepcional.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-3xl font-bold text-yellow-600">$30</span>
+                            <button class="bg-gray-900 text-white px-6 py-2 rounded-full hover:bg-yellow-600 transition-colors">
+                                Ver Detalles
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-reveal">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="resources/Vino_Frail.png" alt="Ginebra Premium" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            Orgánico
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-serif font-bold text-gray-900 mb-2">Vino Fraile</h3>
+                        <p class="text-gray-600 mb-4">Vino Tinto  Fraile, extraordinariamente suave.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-3xl font-bold text-yellow-600">$5</span>
+                            <button class="bg-gray-900 text-white px-6 py-2 rounded-full hover:bg-yellow-600 transition-colors">
+                                Ver Detalles
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 scroll-reveal">
+                <a href="products.html" class="btn-golden text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all">
+                    Ver Todos los Productos
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-20 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="scroll-reveal">
+                    <img src="resources/bartender-hero.png" alt="Bartender en Shot's" class="rounded-2xl shadow-lg w-full">
+                </div>
+                <div class="scroll-reveal">
+                    <h3 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6">La Pasión por la Excelencia</h3>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        En Shot's, no solo vendemos licores; creamos experiencias. Nuestra pasión por la excelencia nos, asegura que cada botella cuente una historia única.
+                    </p>
+                    <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                        Con más de 3 años de experiencia en la industria, está dedicado a ayudarte a descubrir nuevos sabores.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-yellow-600 mb-2">50+</div>
+                            <div class="text-gray-600">Productos Exclusivos</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-yellow-600 mb-2">3+</div>
+                            <div class="text-gray-600">Años de Experiencia</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">Lo Que Dicen Nuestros Clientes</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">La experiencia de nuestros clientes habla por sí sola.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-2xl p-8 scroll-reveal">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold">
+                            M
+                        </div>
+                        <div class="ml-4">
+                            <div class="font-semibold text-gray-900">María González</div>
+                            <div class="text-sm text-gray-600">Cliente Frecuente</div>
+                        </div>
+                    </div>
+                    <div class="flex mb-4">
+                        <span class="text-yellow-500">★★★★★</span>
+                    </div>
+                    <p class="text-gray-600 italic">"La selección de whiskys es impresionante. Encontré etiquetas que no había visto en ningún otro lugar. El servicio es excepcional."</p>
+                </div>
+                
+                <div class="bg-gray-50 rounded-2xl p-8 scroll-reveal">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                            C
+                        </div>
+                        <div class="ml-4">
+                            <div class="font-semibold text-gray-900">Carlos Rodríguez</div>
+                            <div class="text-sm text-gray-600">Coleccionista</div>
+                        </div>
+                    </div>
+                    <div class="flex mb-4">
+                        <span class="text-yellow-500">★★★★★</span>
+                    </div>
+                    <p class="text-gray-600 italic">"Shot's es mi lugar favorito para encontrar botellas únicas. La atención personalizada y el conocimiento del equipo son incomparables."</p>
+                </div>
+                
+                <div class="bg-gray-50 rounded-2xl p-8 scroll-reveal">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                            A
+                        </div>
+                        <div class="ml-4">
+                            <div class="font-semibold text-gray-900">Ana Martínez</div>
+                            <div class="text-sm text-gray-600">Entusiasta</div>
+                        </div>
+                    </div>
+                    <div class="flex mb-4">
+                        <span class="text-yellow-500">★★★★★</span>
+                    </div>
+                    <p class="text-gray-600 italic">"No solo venden licores, te educan sobre ellos. Cada visita es una experiencia de aprendizaje y descubrimiento."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-6">Mantente Informado</h2>
+                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Recibe las últimas novedades, eventos exclusivos y recomendaciones personalizadas directamente en tu correo.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                    <input type="email" placeholder="Tu correo electrónico" class="flex-1 px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    <button class="btn-golden text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all">
+                        Suscribirse
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-4">Shot's</h3>
+                    <p class="text-gray-400 mb-4">Tu destino premium para licores exclusivos y experiencias únicas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">Facebook</a>
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">Instagram</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Productos</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Whisky</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Vodka</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Gin</a></li>
+                        <li><a href="products.html" class="hover:text-yellow-400 transition-colors">Tequila</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Servicios</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">Delivery </a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Via Quisapincha Pinllo</li>
+                        <li>Ciudad, Ambato</li>
+                        <li>Tel: 0969020988</li>
+                        <li>info@shots-licoreria.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Shot's Licorería. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
